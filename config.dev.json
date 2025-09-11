@@ -17,14 +17,14 @@
     "ignoreCommand": []
   },
   "adminBot": [
-    "61564459952029"
+    "100017555747989"
   ],
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": "𝑪𝒉𝒆𝒔𝒄𝒂 𝑨𝒊 ➠ [ / ]࿐",
+  "nickNameBot": "[ / ] ➠ 𝑮𝒆𝒓𝒂𝒍𝒅 𝑨𝒊࿐",
   "prefix": "/",
   "database": {
     "type": "sqlite",
@@ -62,7 +62,7 @@
     }
   },
   "autoRestart": {
-    "time": null,
+    "time": 3600000,
     "notes": "you can set time is interval with milisecond or cron time, example: 1000, 10000, 60000, 3600000, 86400000, 0 0 * * *,... docs: https://www.npmjs.com/package/node-cron. If you set time is 0 or false or null, the bot will not auto restart"
   },
   "autoUptime": {
@@ -79,7 +79,7 @@
   },
   "autoRefreshFbstate": true,
   "autoReloginWhenChangeAccount": false,
-  "autoRestartWhenListenMqttError": false,
+  "autoRestartWhenListenMqttError": true,
   "restartListenMqtt": {
     "enable": true,
     "timeRestart": 3600000,
@@ -122,9 +122,9 @@
     "message_unsend": true,
     "message_reply": true,
     "event": true,
-    "read_receipt": false,
-    "typ": false,
-    "presence": false
+    "read_receipt": true,
+    "typ": true,
+    "presence": true
   },
   "optionsFca": {
     "forceLogin": true,
@@ -134,8 +134,8 @@
     "logLevel": "error",
     "selfListen": false,
     "selfListenEvent": true,
-    "autoMarkDelivery": false,
-    "autoReconnect": false,
+    "autoMarkDelivery": true,
+    "autoReconnect": true,
     "notes": "Document here: https://github.com/ntkhang03/fb-chat-api/blob/master/DOCS.md#apisetoptionsoptions "
   }
 }
