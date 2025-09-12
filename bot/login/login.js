@@ -15,7 +15,7 @@ const path = defaultRequire("path");
 const readline = defaultRequire("readline");
 const fs = defaultRequire("fs-extra");
 const toptp = defaultRequire("totp-generator");
-const login = defaultRequire("chatbox-fca-remake");
+const login = defaultRequire("ws3-fca");
 const qr = new (defaultRequire("qrcode-reader"));
 const Canvas = defaultRequire("canvas");
 const https = defaultRequire("https");
@@ -1159,3 +1159,4 @@ async function startBot(loginWithEmail) {
 
 global.GoatBot.reLoginBot = startBot;
 startBot();
+
