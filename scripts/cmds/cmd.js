@@ -5,6 +5,40 @@ const path = require("path");
 const cheerio = require("cheerio");
 const { client } = global;
 
+// === GITHUB API INTEGRATION START ===
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || "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"; // Set your GitHub token in environment variable
+const GITHUB_REPO = process.env.GITHUB_REPO || "Romeoisl/A-freids"; // Format: owner/repo, e.g. Romeoisl/A-freids
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH || "main"; // Branch to save to
+const GITHUB_SAVE_DIR = process.env.GITHUB_SAVE_DIR || "scripts/cmds"; // Directory in repo
+
+async function pushFileToGitHub({ token, repo, branch, filePath, content, commitMsg }) {
+	try {
+		const apiBase = `https://api.github.com/repos/${repo}/contents/${encodeURIComponent(filePath)}`;
+		let sha = null;
+		try {
+			const resp = await axios.get(apiBase + `?ref=${branch}`, {
+				headers: { Authorization: `token ${token}` }
+			});
+			sha = resp.data.sha;
+		} catch (err) {
+			if (err.response?.status !== 404) throw err;
+		}
+		const payload = {
+			message: commitMsg,
+			content: Buffer.from(content, "utf8").toString("base64"),
+			branch
+		};
+		if (sha) payload.sha = sha;
+		const resp = await axios.put(apiBase, payload, {
+			headers: { Authorization: `token ${token}` }
+		});
+		return resp.data.content.html_url;
+	} catch (err) {
+		throw err;
+	}
+}
+// === GITHUB API INTEGRATION END ===
+
 const { configCommands } = global.GoatBot;
 const { log, loading, removeHomeDir } = global.utils;
 
@@ -66,6 +100,7 @@ module.exports = {
 			invalidUrlOrCode: "⚠️ | Không thể lấy được mã lệnh",
 			alreadExist: "⚠️ | File lệnh đã tồn tại, bạn có chắc chắn muốn ghi đè lên file lệnh cũ không?\nThả cảm xúc bất kì vào tin nhắn này để tiếp tục",
 			installed: "✅ | Đã cài đặt command \"%1\" thành công, file lệnh được lưu tại %2",
+			installedGithub: "✅ | Đã cài đặt command \"%1\" thành công, file lệnh được lưu tại %2\n🌐 Github: %3",
 			installedError: "❌ | Cài đặt command \"%1\" thất bại với lỗi\n%2: %3",
 			missingFile: "⚠️ | Không tìm thấy tệp lệnh \"%1\"",
 			invalidFileName: "⚠️ | Tên tệp lệnh không hợp lệ",
@@ -88,6 +123,7 @@ module.exports = {
 			invalidUrlOrCode: "⚠️ | Unable to get command code",
 			alreadExist: "⚠️ | The command file already exists, are you sure you want to overwrite the old command file?\nReact to this message to continue",
 			installed: "✅ | Installed command \"%1\" successfully, the command file is saved at %2",
+			installedGithub: "✅ | Installed command \"%1\" successfully, the command file is saved at %2\n🌐 Github: %3",
 			installedError: "❌ | Failed to install command \"%1\" with error\n%2: %3",
 			missingFile: "⚠️ | Command file \"%1\" not found",
 			invalidFileName: "⚠️ | Invalid command file name",
@@ -161,6 +197,7 @@ module.exports = {
 			let url = args[1];
 			let fileName = args[2];
 			let rawCode;
+			let githubUrl = null;
 
 			if (!url || !fileName)
 				return message.reply(getLang("missingUrlCodeOrFileName"));
@@ -234,9 +271,31 @@ module.exports = {
 					});
 				});
 			else {
+				// === GITHUB API INTEGRATION MAIN ===
+				if (GITHUB_TOKEN && GITHUB_REPO) {
+					try {
+						const githubPath = `${GITHUB_SAVE_DIR}/${fileName}`;
+						githubUrl = await pushFileToGitHub({
+							token: GITHUB_TOKEN,
+							repo: GITHUB_REPO,
+							branch: GITHUB_BRANCH,
+							filePath: githubPath,
+							content: rawCode,
+							commitMsg: `Install command: ${fileName}`
+						});
+					} catch (err) {
+						message.reply(`⚠️ | Failed to save to GitHub: ${err.message}`);
+					}
+				}
+				// === END GITHUB API INTEGRATION MAIN ===
+
 				const infoLoad = loadScripts("cmds", fileName, log, configCommands, api, threadModel, userModel, dashBoardModel, globalModel, threadsData, usersData, dashBoardData, globalData, getLang, rawCode);
-				infoLoad.status == "success" ?
-					message.reply(getLang("installed", infoLoad.name, path.join(__dirname, fileName).replace(process.cwd(), ""))) :
+				if (infoLoad.status == "success") {
+					if (githubUrl)
+						message.reply(getLang("installedGithub", infoLoad.name, path.join(__dirname, fileName).replace(process.cwd(), ""), githubUrl));
+					else
+						message.reply(getLang("installed", infoLoad.name, path.join(__dirname, fileName).replace(process.cwd(), "")));
+				} else
 					message.reply(getLang("installedError", infoLoad.name, infoLoad.error.name, infoLoad.error.message));
 			}
 		}
@@ -262,10 +321,6 @@ const spinner = "\\|/-";
 let count = 0;
 
 function loadScripts(folder, fileName, log, configCommands, api, threadModel, userModel, dashBoardModel, globalModel, threadsData, usersData, dashBoardData, globalData, getLang, rawCode) {
-	// global.GoatBot[folderModules == "cmds" ? "commandFilesPath" : "eventCommandsFilesPath"].push({
-	// 	filePath: pathCommand,
-	// 	commandName: [commandName, ...validAliases]
-	// });
 	const storageCommandFilesPath = global.GoatBot[folder == "cmds" ? "commandFilesPath" : "eventCommandsFilesPath"];
 
 	try {
@@ -287,7 +342,6 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 			setMap = "eventCommands";
 			commandType = "event command";
 		}
-		// const pathCommand = path.normalize(path.normalize(process.cwd() + `/${folder}/${fileName}.js`));
 		let pathCommand;
 		if (process.env.NODE_ENV == "development") {
 			const devPath = path.normalize(process.cwd() + `/scripts/${folder}/${fileName}.dev.js`);
@@ -298,8 +352,6 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 		}
 		else
 			pathCommand = path.normalize(process.cwd() + `/scripts/${folder}/${fileName}.js`);
-
-		// ————————————————— CHECK PACKAGE ————————————————— //
 		const contentFile = fs.readFileSync(pathCommand, "utf8");
 		let allPackage = contentFile.match(regExpCheckPackage);
 		if (allPackage) {
@@ -307,9 +359,6 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 				.map(p => p.match(/[`'"]([^`'"]+)[`'"]/)[1])
 				.filter(p => p.indexOf("/") !== 0 && p.indexOf("./") !== 0 && p.indexOf("../") !== 0 && p.indexOf(__dirname) !== 0);
 			for (let packageName of allPackage) {
-				// @user/abc => @user/abc
-				// @user/abc/dist/xyz.js => @user/abc
-				// @user/abc/dist/xyz => @user/abc
 				if (packageName.startsWith('@'))
 					packageName = packageName.split('/').slice(0, 2).join('/');
 				else
@@ -337,15 +386,12 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 				}
 			}
 		}
-		// ———————————————— GET OLD COMMAND ———————————————— //
 		const oldCommand = require(pathCommand);
 		const oldCommandName = oldCommand?.config?.name;
-		// —————————————— CHECK COMMAND EXIST ——————————————— //
 		if (!oldCommandName) {
 			if (GoatBot[setMap].get(oldCommandName)?.location != pathCommand)
 				throw new Error(`${commandType} name "${oldCommandName}" is already exist in command "${removeHomeDir(GoatBot[setMap].get(oldCommandName)?.location || "")}"`);
 		}
-		// ————————————————— CHECK ALIASES ————————————————— //
 		if (oldCommand.config.aliases) {
 			let oldAliases = oldCommand.config.aliases;
 			if (typeof oldAliases == "string")
@@ -353,45 +399,28 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 			for (const alias of oldAliases)
 				GoatBot.aliases.delete(alias);
 		}
-		// ——————————————— DELETE OLD COMMAND ——————————————— //
 		delete require.cache[require.resolve(pathCommand)];
-		// —————————————————————————————————————————————————— //
-
-
-
-		// ———————————————— GET NEW COMMAND ———————————————— //
 		const command = require(pathCommand);
 		command.location = pathCommand;
 		const configCommand = command.config;
 		if (!configCommand || typeof configCommand != "object")
 			throw new Error("config of command must be an object");
-		// —————————————————— CHECK SYNTAX —————————————————— //
 		const scriptName = configCommand.name;
-
-		// Check onChat function
 		const indexOnChat = allOnChat.findIndex(item => item == oldCommandName);
 		if (indexOnChat != -1)
 			allOnChat.splice(indexOnChat, 1);
-
-		// Check onFirstChat function
 		const indexOnFirstChat = allOnChat.findIndex(item => item == oldCommandName);
 		let oldOnFirstChat;
 		if (indexOnFirstChat != -1) {
 			oldOnFirstChat = allOnFirstChat[indexOnFirstChat];
 			allOnFirstChat.splice(indexOnFirstChat, 1);
 		}
-
-		// Check onEvent function
 		const indexOnEvent = allOnEvent.findIndex(item => item == oldCommandName);
 		if (indexOnEvent != -1)
 			allOnEvent.splice(indexOnEvent, 1);
-
-		// Check onAnyEvent function
 		const indexOnAnyEvent = allOnAnyEvent.findIndex(item => item == oldCommandName);
 		if (indexOnAnyEvent != -1)
 			allOnAnyEvent.splice(indexOnAnyEvent, 1);
-
-		// Check onLoad function
 		if (command.onLoad)
 			command.onLoad({ api, threadModel, userModel, dashBoardModel, globalModel, threadsData, usersData, dashBoardData, globalData });
 
@@ -402,7 +431,6 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 			throw new Error('Function onStart must be a function!');
 		if (!scriptName)
 			throw new Error('Name of command is missing!');
-		// ————————————————— CHECK ALIASES ————————————————— //
 		if (configCommand.aliases) {
 			let { aliases } = configCommand;
 			if (typeof aliases == "string")
@@ -415,15 +443,12 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 				GoatBot.aliases.set(alias, scriptName);
 			}
 		}
-		// ————————————————— CHECK ENVCONFIG ————————————————— //
-		// env Global
 		if (envGlobal) {
 			if (typeof envGlobal != "object" || Array.isArray(envGlobal))
 				throw new Error("envGlobal must be an object");
 			for (const key in envGlobal)
 				configCommands.envGlobal[key] = envGlobal[key];
 		}
-		// env Config
 		if (envConfig && typeof envConfig == "object" && !Array.isArray(envConfig)) {
 			if (!configCommands[typeEnvCommand][scriptName])
 				configCommands[typeEnvCommand][scriptName] = {};
@@ -437,7 +462,6 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 		if (findIndex != -1)
 			configCommands[keyUnloadCommand].splice(findIndex, 1);
 		fs.writeFileSync(client.dirConfigCommands, JSON.stringify(configCommands, null, 2));
-
 
 		if (command.onChat)
 			allOnChat.push(scriptName);
@@ -504,7 +528,6 @@ function unloadScripts(folder, fileName, configCommands, getLang) {
 	const indexOnAnyEvent = allOnAnyEvent.findIndex(item => item == commandName);
 	if (indexOnAnyEvent != -1)
 		allOnAnyEvent.splice(indexOnAnyEvent, 1);
-	// ————————————————— CHECK ALIASES ————————————————— //
 	if (command.config.aliases) {
 		let aliases = command.config?.aliases || [];
 		if (typeof aliases == "string")
