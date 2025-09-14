@@ -1,5 +1,5 @@
 # index.js
-Goat.newVersionDetected=You are using version %1, the latest version is %2. Please update to use the bot better by typing into the console/cmd command: %3
+Goat.newVersionDetected=You are using version %1, the latest version is %2. Please update to use the bot better by typing into the console/cmd command: node update
 Goat.autoRestart1=Bot will auto restart in %1
 Goat.autoRestart2=Bot will auto restart by cron job: %1
 Goat.googleApiTokenExpired=Google API refresh token has expired or been revoked, please get a new token at https://developers.google.com/oauthplayground/
@@ -20,7 +20,7 @@ login.chooseCookieString=Login with cookie string
 login.chooseCookieArray=Login with cookie array
 login.loginWith=You choose to %1
 login.inputEmail=> Please enter your email (id) or phone number facebook account:
-login.inputPassword=> Please enter your password:
+login.inputPassword= Please enter your password:
 login.input2FA=> Please enter the 2FA code (leave blank if you don't have 2FA enabled):
 login.inputToken=> Please enter your token full permission (start wit EAAAA):
 login.inputCookieString=> Please enter your cookie string:
@@ -59,7 +59,6 @@ login.refreshCookieAfter=Refreshing cookie after %1
 login.listenMqttClose=ListenMQTT closed
 login.listenMqttCloseByUser=ListenMQTT closed by user
 login.retryCheckLiveCookie=Retrying to check cookie... %1
-login.startBotSuccess=Bot has been started successfully, start receiving messages from users
 
 version.tooOldVersion=You are using a too old version of Goat-Bot, please update to the latest version by typing the command: %1 into the cmd/console/terminal/shell
 
@@ -89,19 +88,20 @@ handlerCheckData.cantCreateThread=Groups with id '%1' cannot be written to the d
 handlerCheckData.cantCreateUser=Users with id '%1' cannot be written to the database!
 
 # bot/handler/handlerEvents.js
-handlerEvents.userBanned=You have been banned from using the bot\n» Reason: %1\n» Time: %2\n» User ID: %3
-handlerEvents.threadBanned=This group has been banned from using the bot\n» Reason: %1\n» Time: %2\n» Thread ID: %3
-handlerEvents.onlyAdminBox=This group is currently enabled only group administrators can use the bot
-handlerEvents.onlyAdminBot=❌ | Currently only bot's admin can use bot
-handlerEvents.commandNotFound=Command "%1" does not exist, type %2help to see all available commands
-handlerEvents.commandNotFound2=The command you are using does not exist, type %1help to see all available commands
-handlerEvents.commandSyntaxError=The command you are using is wrong syntax, please type %1help %2 to see the details of how to use this command
-handlerEvents.onlyAdmin=❌ | Only group administrators can use the command "%1"
-handlerEvents.onlyAdminToUseOnReply=❌ | Only group administrators can use the reply function of the command "%1"
-handlerEvents.onlyAdminToUseOnReaction=❌ | Only group administrators can use the reaction function of the command "%1"
-handlerEvents.onlyAdminBot2=❌ | Only bot's admin can use the command "%1"
-handlerEvents.onlyAdminBot2ToUseOnReply=❌ | Only bot's admin can use the reply function of the command "%1"
-handlerEvents.onlyAdminBot2ToUseOnReaction=❌ | Only bot's admin can use the reaction function of the command "%1"
+handlerEvents.userBanned=🛑 𝗔𝗖𝗖𝗘𝗦𝗦 𝗗𝗘𝗡𝗜𝗘𝗗! \n ━━━━━━━━━━\n ❝ 𝚈𝚘𝚞 𝚊𝚛𝚎 𝙱𝚕𝚘𝚌𝚔𝚎𝚍, 𝚝𝚑𝚒𝚜 𝚜𝚒𝚖𝚙𝚕𝚢 𝚖𝚎𝚊𝚗𝚜 𝚝𝚑𝚊𝚝 𝚢𝚘𝚞 𝚌𝚊𝚗'𝚝 𝚞𝚜𝚎 𝚋𝚘𝚝 𝚌𝚊𝚞𝚜𝚎 𝚢𝚘𝚞'𝚛𝚎 𝚋𝚊𝚗𝚗𝚎𝚍. ❞\n ━━━━━━━━━━
+handlerEvents.threadBanned=🛑 𝗡𝗢𝗧 𝗔𝗨𝗧𝗛𝗢𝗥𝗜𝗭𝗘𝗗\n ━━━━━━━━━━\n ❝ 𝚈𝚘𝚞𝚛 𝙶𝚛𝚘𝚞𝚙 𝚒𝚜 𝙱𝚕𝚘𝚌𝚔𝚎𝚍, 𝚝𝚑𝚒𝚜 𝚜𝚒𝚖𝚙𝚕𝚢 𝚖𝚎𝚊𝚗𝚜 𝚝𝚑𝚊𝚝 𝚢𝚘𝚞𝚛 𝚐𝚛𝚘𝚞𝚙 𝚌𝚊𝚗'𝚝 𝚞𝚜𝚎 𝚋𝚘𝚝 𝚌𝚊𝚞𝚜𝚎 𝚢𝚘𝚞𝚛 𝚐𝚛𝚘𝚞𝚙 𝚒𝚜 𝚋𝚊𝚗𝚗𝚎𝚍. ❞\n ━━━━━━━━━━
+handlerEvents.maintainceMode= 🌀 | 𝗠𝗔𝗜𝗡𝗧𝗔𝗜𝗡 𝗠𝗢𝗗𝗘\n    ━━━━━━━━━━━━━\n𝚂𝚘𝚛𝚛𝚢 𝚋𝚞𝚝 𝚝𝚑𝚎 𝚋𝚘𝚝 𝚒𝚜 𝚌𝚞𝚛𝚛𝚎𝚗𝚝𝚕𝚢 𝚘𝚗 𝚖𝚊𝚒𝚗𝚝𝚎𝚗𝚊𝚗𝚌𝚎 𝚖𝚘𝚍𝚎, 𝚠𝚑𝚊𝚝 𝚝𝚑𝚒𝚜 𝚖𝚎𝚊𝚗𝚜 𝚒𝚜 𝚝𝚑𝚊𝚝 𝚢𝚘𝚞 𝚌𝚊𝚗𝚗𝚘𝚝 𝚞𝚜𝚎 𝚝𝚑𝚒𝚜 𝚋𝚘𝚝 𝚝𝚘 𝚊𝚟𝚘𝚒𝚍 𝚛𝚒𝚜𝚔 𝚘𝚏 𝚝𝚑𝚎 𝚊𝚌𝚌𝚘𝚞𝚗𝚝 𝚐𝚎𝚝𝚝𝚒𝚗𝚐 𝚕𝚘𝚌𝚔𝚎𝚍.\n     ━━━━━━━━━━━━━\n          ```````````````````\n          𝙶𝚎𝚛𝚊𝚕𝚍 𝙼𝚊𝚡.\n\n         ````````````````````
+handlerEvents.onlyAdminBox=🛑 𝗔𝗖𝗖𝗘𝗦𝗦 𝗗𝗘𝗡𝗜𝗘𝗗!\n ━━━━━━━━━━\n ❝ 𝙲𝚞𝚛𝚛𝚎𝚗𝚝𝚕𝚢 𝚗𝚘 𝚘𝚗𝚎 𝚌𝚊𝚗 𝚞𝚜𝚎 𝚝𝚑𝚎 𝚘𝚗𝚕𝚢 𝚐𝚛𝚘𝚞𝚙 𝚊𝚍𝚖𝚒𝚗 𝚌𝚊𝚗 𝚞𝚜𝚎 ❞\n━━━━━━━━━━
+handlerEvents.onlyAdminBot=🛑 𝗔𝗖𝗖𝗘𝗦𝗦 𝗗𝗘𝗡𝗜𝗘𝗗!\n ━━━━━━━━━━\n ❝ 𝙲𝚞𝚛𝚛𝚎𝚗𝚝𝚕𝚢 𝚗𝚘 𝚘𝚗𝚎 𝚌𝚊𝚗 𝚞𝚜𝚎 𝚘𝚗𝚕𝚢 𝚊𝚍𝚖𝚒𝚗 𝚌𝚊𝚗 𝚞𝚜𝚎 ❞\n ━━━━━━━━━━
+handlerEvents.commandNotFound=🛑 𝗡𝗢𝗧 𝗘𝗫𝗜𝗦𝗧\n ━━━━━━━━━━\n❝ Command ❛ %1 ❜ does not exist in mateo system, therefore type %2help to see more cmds. ❞\n ━━━━━━━━━━
+handlerEvents.commandNotFound2=🛑 𝗡𝗢𝗧 𝗘𝗫𝗜𝗦𝗧\n ━━━━━━━━━━\n❝ Command ❛ %1 ❜ does not exist in mateo system, therefore type %1help to see more cmds. ❞\n━━━━━━━━━━
+handlerEvents.commandSyntaxError=🛑 𝗡𝗢𝗧 𝗘𝗫𝗜𝗦𝗧\n ━━━━━━━━━━\n❝ 𝙷𝚎𝚕𝚕𝚘, 𝚢𝚘𝚞 𝚊𝚛𝚎 𝚗𝚘𝚝 𝚞𝚜𝚒𝚗𝚐 𝚝𝚑𝚒𝚜 𝚌𝚖𝚍 𝚝𝚑𝚎 𝚁𝚒𝚐𝚑𝚝 𝚠𝚊𝚢, 𝚝𝚢𝚙𝚎 %1𝚑𝚎𝚕𝚙 %2 𝚝𝚘 𝚜𝚎𝚎 𝚑𝚘𝚠 𝚝𝚘 𝚞𝚜𝚎. ❞\n ━━━━━━━━━━
+handlerEvents.onlyAdmin=🛑 𝗡𝗢𝗧 𝗔𝗨𝗧𝗛𝗢𝗥𝗜𝗭𝗘𝗗\n ━━━━━━━━━━\n ❝ 𝚃𝚑𝚎 𝙲𝚖𝚍 𝚢𝚘𝚞 𝚓𝚞𝚜𝚝 𝚞𝚜𝚎𝚍 𝚒𝚜 𝚏𝚘𝚛 𝚐𝚛𝚘𝚞𝚙 𝚊𝚍𝚖𝚒𝚗 ❞\n ━━━━━━━━━━
+handlerEvents.onlyAdminToUseOnReply=🛑 𝗡𝗢𝗧 𝗔𝗨𝗧𝗛𝗢𝗥𝗜𝗭𝗘𝗗\n ━━━━━━━━━━\n ❝ 𝚈𝚘𝚞 𝚊𝚛𝚎 𝚗𝚘𝚝 𝚊𝚞𝚝𝚑𝚘𝚛𝚒𝚣𝚎𝚍 𝚝𝚘 𝚞𝚜𝚎 𝚝𝚑𝚎 𝚛𝚎𝚙𝚕𝚢 𝚏𝚞𝚗𝚌𝚝𝚒𝚘𝚗 𝚘𝚏 𝚝𝚑𝚎 𝚌𝚖𝚍 %1.❞\n ━━━━━━━━━━
+handlerEvents.onlyAdminToUseOnReaction=🛑 𝗡𝗢𝗧 𝗔𝗨𝗧𝗛𝗢𝗥𝗜𝗭𝗘𝗗\n ━━━━━━━━━━\n ❝ 𝚈𝚘𝚞 𝚊𝚛𝚎 𝚗𝚘𝚝 𝚊𝚞𝚝𝚑𝚘𝚛𝚒𝚣𝚎𝚍 𝚝𝚘 𝚞𝚜𝚎 𝚝𝚑𝚎 𝚛𝚎𝚊𝚌𝚝𝚒𝚘𝚗 𝚏𝚞𝚗𝚌𝚝𝚒𝚘𝚗 𝚘𝚏 𝚝𝚑𝚎 𝚌𝚖𝚍 > %1 ❞\n ━━━━━━━━━━
+handlerEvents.onlyAdminBot2=🛑 𝗡𝗢𝗧 𝗔𝗨𝗧𝗛𝗢𝗥𝗜𝗭𝗘𝗗\n ━━━━━━━━━━\n ❝ 𝚃𝚑𝚎 𝚌𝚖𝚍 𝚌𝚊𝚗 𝚘𝚗𝚕𝚢 𝚋𝚎 𝚎𝚡𝚎𝚌𝚞𝚝𝚎𝚍 𝚋𝚢 𝚖𝚊𝚝𝚎𝚘 𝚊𝚍𝚖𝚒𝚗𝚜. ❞\n ━━━━━━━━━━
+handlerEvents.onlyAdminBot2ToUseOnReply=🛑 𝗡𝗢𝗧 𝗔𝗨𝗧𝗛𝗢𝗥𝗜𝗭𝗘𝗗\n ━━━━━━━━━━\n ❝ 𝚈𝚘𝚞 𝚊𝚛𝚎 𝚗𝚘𝚝 𝚊𝚞𝚝𝚑𝚘𝚛𝚒𝚣𝚎𝚍 𝚝𝚘 𝚞𝚜𝚎 𝚝𝚑𝚎 𝚌𝚖𝚍'𝚜 𝚛𝚎𝚙𝚕𝚢 𝚏𝚞𝚗𝚌𝚝𝚒𝚘𝚗. ❞\n ━━━━━━━━━━
+handlerEvents.onlyAdminBot2ToUseOnReaction=🛑 𝗡𝗢𝗧 𝗔𝗨𝗧𝗛𝗢𝗥𝗜𝗭𝗘𝗗\n ━━━━━━━━━━\n ❝ 𝚈𝚘𝚞 𝚊𝚛𝚎 𝚗𝚘𝚝 𝚊𝚞𝚝𝚑𝚘𝚛𝚒𝚣𝚎𝚍 𝚝𝚘 𝚞𝚜𝚎 𝚝𝚑𝚎 𝚌𝚖𝚍'𝚜 𝚛𝚎𝚊𝚌𝚝𝚒𝚘𝚗 𝚏𝚞𝚗𝚌𝚝𝚒𝚘𝚗. ❞\n ━━━━━━━━━━
 handlerEvents.waitingForCommand=⏱ You are in the waiting time to use this command, please come back after %1s
 handlerEvents.errorOccurred=❌ [ %1 ]\nAn error occurred at command "%2"\n\n%3
 handlerEvents.errorOccurred2=❌ [ %1 ]\nAn error occurred at command onChat in command "%2"\n\n%3
@@ -109,6 +109,41 @@ handlerEvents.errorOccurred3=❌ [ %1 ]\nAn error occurred when executing onRepl
 handlerEvents.errorOccurred4=❌ [ %1 ]\nAn error occurred when executing onReaction at command "%2"\n\n%3
 handlerEvents.errorOccurred5=❌ [ %1 ]\nAn error occurred when executing onEvent at command "%2"\n\n%3
 handlerEvents.errorOccurred6=❌ [ %1 ]\nAn error occurred when executing onEvent at command "%2"\n\n%3
+handlerEvents.errorOccurred7=❌ [ %1 ]\nAn error occurred when executing onAnyEvent at command "%2"\n\n%3
+handlerEvents.cannotFindCommandName=❌ Cannot find command name to execute this reply!
+handlerEvents.cannotFindCommand=cannot execute reply for this cmd.
+
+# bot/autoUptime.js
+autoUptime.autoUptimeTurnedOn=AutoUptime mode turned on
+
+# database/controller/index.js
+indexController.connectingMongoDB=Connecting a MONGODB database
+indexController.connectMongoDBSuccess=Successfully connected mongodb database!
+indexController.connectMongoDBError=An error occurred when connecting the Mongodb database:
+indexController.connectingMySQL=Connecting a SQLITE database
+indexController.connectMySQLSuccess=Successfully connected SQLITE database!
+indexController.connectMySQLError=An error occurred while connecting to a SQLITE database:
+
+# updater.js
+updater.latestVersion=You are using the latest version
+updater.cantFindVersion=You are using an undefined version (%1), please check your package.json file again
+updater.newVersions=There are %1 new versions to update, starting to update...
+updater.updateSuccess=Update successfully%1
+updater.configChanged=The %1 has been changed, please check your config.json file again
+updater.installingPackages=Installing dependencies for bot...
+updater.installSuccess=Installed dependencies successfully, restart the bot to use the new version
+updater.backupSuccess=Successfully backed up changed files, see in the %1 folder
+updater.restartToApply=. Restart the bot to apply the new version
+updater.skipFile=There is a new version of the %1 file, but you have skipped this file during the update process with the comment %2 in this file
+
+# dashboard/routes/verifyfbid.js
+verifyfbid.sendCode=Your verification code is:\n%1\nThe verification code is valid for %2 minutes
+
+# utils.js
+utils.errorOccurred=❌ An error occurred:\n\n%1
+
+# for command
+command.restartedBot=Bot has been restarted"%2"\n\n%3
 handlerEvents.errorOccurred7=❌ [ %1 ]\nAn error occurred when executing onAnyEvent at command "%2"\n\n%3
 handlerEvents.cannotFindCommandName=❌ Cannot find command name to execute this reply!
 handlerEvents.cannotFindCommand=❌ Cannot find command "%1" to execute this reply!
@@ -152,4 +187,5 @@ app.tooManyRequests=Too many requests in the last minute. Please try again later
 app.notPermissionChangeFbstate=You do not have permission to change fbstate!
 app.notFoundFbstate=Please enter fbstate!
 app.changedFbstateSuccess=Successfully changed fbstate!
+app.serverError=Server an error, please try again later!
 app.serverError=Server an error, please try again later!
